@@ -602,7 +602,7 @@ typedef struct
 //
 // muzzle flashes / player effects
 //
-#define	MZ_BLASTER			0
+#define	MZ_FIREFLOWER			0
 #define MZ_MACHINEGUN		1
 #define	MZ_SHOTGUN			2
 #define	MZ_CHAINGUN1		3
@@ -616,7 +616,7 @@ typedef struct
 #define	MZ_RESPAWN			11
 #define	MZ_BFG				12
 #define	MZ_SSHOTGUN			13
-#define	MZ_HYPERBLASTER		14
+#define	MZ_ICEFLOWER		14
 #define	MZ_ITEMRESPAWN		15
 // RAFAEL
 #define MZ_IONRIPPER		16
@@ -989,6 +989,7 @@ typedef enum
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
 #define STAT_SPECTATOR			17
+#define STAT_COINS				18
 
 #define	MAX_STATS				32
 
@@ -1179,3 +1180,5 @@ typedef struct
 extern int vidref_val;
 // PGM
 // ==================
+
+int coins;

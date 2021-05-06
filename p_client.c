@@ -297,7 +297,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 			switch (mod)
 			{
 			case MOD_BLASTER:
-				message = "was blasted by";
+				message = "was burned by";
 				break;
 			case MOD_SHOTGUN:
 				message = "was gunned down by";
@@ -331,7 +331,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 				break;
 			case MOD_HYPERBLASTER:
 				message = "was melted by";
-				message2 = "'s hyperblaster";
+				message2 = "'s ice_flower";
 				break;
 			case MOD_RAILGUN:
 				message = "was railed by";
@@ -591,7 +591,7 @@ void InitClientPersistant (gclient_t *client)
 
 	memset (&client->pers, 0, sizeof(client->pers));
 
-	item = FindItem("Blaster");
+	item = FindItem("fireflower");
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
 

@@ -286,11 +286,11 @@ void HelpComputer (edict_t *ent)
 	char	*sk;
 
 	if (skill->value == 0)
-		sk = "easy";
+		sk = "Goomba";
 	else if (skill->value == 1)
-		sk = "medium";
+		sk = "Koopa";
 	else if (skill->value == 2)
-		sk = "hard";
+		sk = "Bowser";
 	else
 		sk = "hard+";
 
@@ -301,7 +301,7 @@ void HelpComputer (edict_t *ent)
 		"xv 0 yv 24 cstring2 \"%s\" "		// level name
 		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
+		"xv 50 yv 164 string2 \" Stomps     flagposts    hiddenpathways\" "
 		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ", 
 		sk,
 		level.level_name,
@@ -501,6 +501,8 @@ void G_SetStats (edict_t *ent)
 		ent->client->ps.stats[STAT_HELPICON] = 0;
 
 	ent->client->ps.stats[STAT_SPECTATOR] = 0;
+
+	ent->client->ps.stats[STAT_COINS] = coins;
 }
 
 /*

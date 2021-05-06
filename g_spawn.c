@@ -682,6 +682,13 @@ char *single_statusbar =
 "	xv	148 "
 "	pic	11 "
 "endif "
+
+// coins
+"yb	-30 "
+"xr	-75 "
+"num 2	18 "
+"xr	-25 "
+"pic 0 "
 ;
 
 char *dm_statusbar =

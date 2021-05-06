@@ -5,17 +5,17 @@ qboolean	Pickup_Weapon (edict_t *ent, edict_t *other);
 void		Use_Weapon (edict_t *ent, gitem_t *inv);
 void		Drop_Weapon (edict_t *ent, gitem_t *inv);
 
-void Weapon_Blaster (edict_t *ent);
-void Weapon_Shotgun (edict_t *ent);
+void Weapon_Fire_Flower (edict_t *ent);
+void Weapon_Tanooki (edict_t *ent);
 void Weapon_SuperShotgun (edict_t *ent);
-void Weapon_Machinegun (edict_t *ent);
+void Weapon_Boomerang (edict_t *ent);
 void Weapon_Chaingun (edict_t *ent);
-void Weapon_HyperBlaster (edict_t *ent);
+void Weapon_Ice_Flower (edict_t *ent);
 void Weapon_RocketLauncher (edict_t *ent);
 void Weapon_Grenade (edict_t *ent);
 void Weapon_GrenadeLauncher (edict_t *ent);
 void Weapon_Railgun (edict_t *ent);
-void Weapon_BFG (edict_t *ent);
+void Weapon_Unarmed (edict_t *ent);
 
 gitem_armor_t jacketarmor_info	= { 25,  50, .30, .00, ARMOR_JACKET};
 gitem_armor_t combatarmor_info	= { 50, 100, .60, .30, ARMOR_COMBAT};
@@ -189,9 +189,12 @@ qboolean Pickup_Adrenaline (edict_t *ent, edict_t *other)
 	return true;
 }
 
-qboolean Pickup_AncientHead (edict_t *ent, edict_t *other)
+qboolean Pickup_Upshroom (edict_t *ent, edict_t *other)
 {
-	other->max_health += 2;
+	other->max_health += 100;
+
+	if (other->health < other->max_health)
+		other->health = other->max_health;
 
 	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
 		SetRespawn (ent, ent->item->quantity);
@@ -1073,7 +1076,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 		if ( (int)dmflags->value & DF_NO_HEALTH )
 		{
-			if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
+			if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_Upshroom)
 			{
 				G_FreeEdict (ent);
 				return;
@@ -1081,7 +1084,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 		if ( (int)dmflags->value & DF_INFINITE_AMMO )
 		{
-			if ( (item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_bfg") == 0) )
+			if ( (item->flags == IT_AMMO) || (strcmp(ent->classname, "weapon_unarmed") == 0) )
 			{
 				G_FreeEdict (ent);
 				return;
@@ -1270,21 +1273,21 @@ gitem_t	itemlist[] =
 always owned, never in the world
 */
 	{
-		"weapon_blaster", 
-		NULL,
+		"weapon_fire_flower", 
+		Pickup_Weapon,
 		Use_Weapon,
-		NULL,
-		Weapon_Blaster,
+		Drop_Weapon,
+		Weapon_Fire_Flower,
 		"misc/w_pkup.wav",
 		NULL, 0,
 		"models/weapons/v_blast/tris.md2",
 /* icon */		"w_blaster",
-/* pickup */	"Blaster",
+/* pickup */	"FireFlower",
 		0,
-		0,
+		1,
 		NULL,
 		IT_WEAPON|IT_STAY_COOP,
-		WEAP_BLASTER,
+		WEAP_FIREFLOWER,
 		NULL,
 		0,
 /* precache */ "weapons/blastf1a.wav misc/lasfly.wav"
@@ -1293,21 +1296,21 @@ always owned, never in the world
 /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_shotgun", 
+		"weapon_tanooki", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
-		Weapon_Shotgun,
+		Weapon_Tanooki,
 		"misc/w_pkup.wav",
 		"models/weapons/g_shotg/tris.md2", EF_ROTATE,
 		"models/weapons/v_shotg/tris.md2",
 /* icon */		"w_shotgun",
-/* pickup */	"Shotgun",
+/* pickup */	"Tanooki",
 		0,
 		1,
 		"Shells",
 		IT_WEAPON|IT_STAY_COOP,
-		WEAP_SHOTGUN,
+		WEAP_TANOOKI,
 		NULL,
 		0,
 /* precache */ "weapons/shotgf1b.wav weapons/shotgr1b.wav"
@@ -1336,24 +1339,24 @@ always owned, never in the world
 /* precache */ "weapons/sshotf1b.wav"
 	},
 
-/*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
+/*QUAKED weapon_boomerang (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_machinegun", 
+		"weapon_boomerang", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
-		Weapon_Machinegun,
+		Weapon_Boomerang,
 		"misc/w_pkup.wav",
 		"models/weapons/g_machn/tris.md2", EF_ROTATE,
 		"models/weapons/v_machn/tris.md2",
 /* icon */		"w_machinegun",
-/* pickup */	"Machinegun",
+/* pickup */	"Boomerang",
 		0,
 		1,
 		"Bullets",
 		IT_WEAPON|IT_STAY_COOP,
-		WEAP_MACHINEGUN,
+		WEAP_BOOMERANG,
 		NULL,
 		0,
 /* precache */ "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
@@ -1454,21 +1457,21 @@ always owned, never in the world
 /*QUAKED weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_hyperblaster", 
+		"weapon_ice_flower", 
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
-		Weapon_HyperBlaster,
+		Weapon_Ice_Flower,
 		"misc/w_pkup.wav",
 		"models/weapons/g_hyperb/tris.md2", EF_ROTATE,
 		"models/weapons/v_hyperb/tris.md2",
 /* icon */		"w_hyperblaster",
-/* pickup */	"HyperBlaster",
+/* pickup */	"IceFlower",
 		0,
 		1,
 		"Cells",
 		IT_WEAPON|IT_STAY_COOP,
-		WEAP_HYPERBLASTER,
+		WEAP_ICEFLOWER,
 		NULL,
 		0,
 /* precache */ "weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav"
@@ -1500,21 +1503,21 @@ always owned, never in the world
 /*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_bfg",
+		"weapon_unarmed",
 		Pickup_Weapon,
 		Use_Weapon,
 		Drop_Weapon,
-		Weapon_BFG,
+		Weapon_Unarmed,
 		"misc/w_pkup.wav",
-		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
-		"models/weapons/v_bfg/tris.md2",
+		"models/weapons/g_shotg/tris.md2", EF_ROTATE,
+		"models/weapons/v_shotg/tris.md2",
 /* icon */		"w_bfg",
 /* pickup */	"BFG10K",
 		0,
 		50,
 		"Cells",
 		IT_WEAPON|IT_STAY_COOP,
-		WEAP_BFG,
+		WEAP_UNARMED,
 		NULL,
 		0,
 /* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
@@ -1762,8 +1765,8 @@ always owned, never in the world
 Special item that gives +2 to maximum health
 */
 	{
-		"item_ancient_head",
-		Pickup_AncientHead,
+		"item_upshroom",
+		Pickup_Upshroom,
 		NULL,
 		NULL,
 		NULL,
@@ -1771,7 +1774,7 @@ Special item that gives +2 to maximum health
 		"models/items/c_head/tris.md2", EF_ROTATE,
 		NULL,
 /* icon */		"i_fixme",
-/* pickup */	"Ancient Head",
+/* pickup */	"Upshroom",
 /* width */		2,
 		60,
 		NULL,
