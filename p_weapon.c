@@ -137,7 +137,7 @@ qboolean Pickup_Weapon (edict_t *ent, edict_t *other)
 
 	if (other->client->pers.weapon != ent->item && 
 		(other->client->pers.inventory[index] == 1) &&
-		( !deathmatch->value || other->client->pers.weapon == FindItem("blaster") ) )
+		( !deathmatch->value || other->client->pers.weapon == FindItem("fireflower") ) )
 		other->client->newweapon = ent->item;
 
 	return true;
@@ -221,9 +221,9 @@ void NoAmmoWeaponChange (edict_t *ent)
 		return;
 	}
 	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("cells"))]
-		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("hyperblaster"))] )
+		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("ice flower"))] )
 	{
-		ent->client->newweapon = FindItem ("hyperblaster");
+		ent->client->newweapon = FindItem ("ice flower");
 		return;
 	}
 	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("bullets"))]
@@ -250,7 +250,7 @@ void NoAmmoWeaponChange (edict_t *ent)
 		ent->client->newweapon = FindItem ("shotgun");
 		return;
 	}
-	ent->client->newweapon = FindItem ("blaster");
+	ent->client->newweapon = FindItem ("fire flower");
 }
 
 /*
@@ -816,9 +816,9 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	gi.WriteByte (svc_muzzleflash);
 	gi.WriteShort (ent-g_edicts);
 	if (hyper)
-		gi.WriteByte (MZ_HYPERBLASTER | is_silenced);
+		gi.WriteByte (MZ_ICEFLOWER | is_silenced);
 	else
-		gi.WriteByte (MZ_BLASTER | is_silenced);
+		gi.WriteByte (MZ_FIREFLOWER | is_silenced);
 	gi.multicast (ent->s.origin, MULTICAST_PVS);
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
@@ -832,12 +832,12 @@ void Weapon_Blaster_Fire (edict_t *ent)
 	if (deathmatch->value)
 		damage = 15;
 	else
-		damage = 10;
+		damage = 1000;
 	Blaster_Fire (ent, vec3_origin, damage, false, EF_BLASTER);
 	ent->client->ps.gunframe++;
 }
 
-void Weapon_Blaster (edict_t *ent)
+void Weapon_Fire_Flower (edict_t *ent)
 {
 	static int	pause_frames[]	= {19, 32, 0};
 	static int	fire_frames[]	= {5, 0};
@@ -848,6 +848,7 @@ void Weapon_Blaster (edict_t *ent)
 
 void Weapon_HyperBlaster_Fire (edict_t *ent)
 {
+	/*
 	float	rotation;
 	vec3_t	offset;
 	int		effect;
@@ -912,10 +913,19 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/hyprbd1a.wav"), 1, ATTN_NORM, 0);
 		ent->client->weapon_sound = 0;
 	}
+	*/
+	int		damage;
+
+	if (deathmatch->value)
+		damage = 15;
+	else
+		damage = 0;
+	Blaster_Fire(ent, vec3_origin, damage, false, EF_HYPERBLASTER);
+	ent->client->ps.gunframe++;
 
 }
 
-void Weapon_HyperBlaster (edict_t *ent)
+void Weapon_Ice_Flower (edict_t *ent)
 {
 	static int	pause_frames[]	= {0};
 	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
@@ -933,6 +943,7 @@ MACHINEGUN / CHAINGUN
 
 void Machinegun_Fire (edict_t *ent)
 {
+	/*
 	int	i;
 	vec3_t		start;
 	vec3_t		forward, right;
@@ -1015,9 +1026,18 @@ void Machinegun_Fire (edict_t *ent)
 		ent->s.frame = FRAME_attack1 - (int) (random()+0.25);
 		ent->client->anim_end = FRAME_attack8;
 	}
+	*/
+	int		damage;
+
+	if (deathmatch->value)
+		damage = 15;
+	else
+		damage = 1000;
+	Blaster_Fire(ent, vec3_origin, damage, false, EF_BLASTER);
+	ent->client->ps.gunframe++;
 }
 
-void Weapon_Machinegun (edict_t *ent)
+void Weapon_Boomerang (edict_t *ent)
 {
 	static int	pause_frames[]	= {23, 45, 0};
 	static int	fire_frames[]	= {4, 5, 0};
@@ -1208,7 +1228,7 @@ void weapon_shotgun_fire (edict_t *ent)
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
-void Weapon_Shotgun (edict_t *ent)
+void Weapon_Tanooki (edict_t *ent)
 {
 	static int	pause_frames[]	= {22, 28, 34, 0};
 	static int	fire_frames[]	= {8, 9, 0};
@@ -1403,7 +1423,7 @@ void weapon_bfg_fire (edict_t *ent)
 		ent->client->pers.inventory[ent->client->ammo_index] -= 50;
 }
 
-void Weapon_BFG (edict_t *ent)
+void Weapon_Unarmed (edict_t *ent)
 {
 	static int	pause_frames[]	= {39, 45, 50, 55, 0};
 	static int	fire_frames[]	= {9, 17, 0};

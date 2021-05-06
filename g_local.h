@@ -200,17 +200,17 @@ typedef struct
 #define IT_POWERUP		32
 
 // gitem_t->weapmodel for weapons indicates model index
-#define WEAP_BLASTER			1 
-#define WEAP_SHOTGUN			2 
+#define WEAP_FIREFLOWER			1 
+#define WEAP_TANOOKI			2 
 #define WEAP_SUPERSHOTGUN		3 
-#define WEAP_MACHINEGUN			4 
+#define WEAP_BOOMERANG			4 
 #define WEAP_CHAINGUN			5 
 #define WEAP_GRENADES			6 
 #define WEAP_GRENADELAUNCHER	7 
 #define WEAP_ROCKETLAUNCHER		8 
-#define WEAP_HYPERBLASTER		9 
+#define WEAP_ICEFLOWER		    9 
 #define WEAP_RAILGUN			10
-#define WEAP_BFG				11
+#define WEAP_UNARMED			11
 
 typedef struct gitem_s
 {
@@ -1091,5 +1091,13 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
+
+	/*
+	===============================
+	My Code
+	===============================
+	*/
+
+	int			coins;
 };
 

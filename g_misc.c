@@ -865,13 +865,15 @@ void barrel_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *s
 	M_walkmove (self, vectoyaw(v), 20 * ratio * FRAMETIME);
 }
 
-void barrel_explode (edict_t *self)
+void barrel_explode(edict_t *self)
 {
 	vec3_t	org;
 	float	spd;
 	vec3_t	save;
+	edict_t		*it_ent, *ent;
+	gitem_t		*it;
 
-	T_RadiusDamage (self, self->activator, self->dmg, NULL, self->dmg+40, MOD_BARREL);
+	//T_RadiusDamage (self, self->activator, self->dmg, NULL, self->dmg+40, MOD_BARREL);
 
 	VectorCopy (self->s.origin, save);
 	VectorMA (self->absmin, 0.5, self->size, self->s.origin);
@@ -942,14 +944,53 @@ void barrel_explode (edict_t *self)
 		BecomeExplosion2 (self);
 	else
 		BecomeExplosion1 (self);
+
 }
 
 void barrel_delay (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
+	edict_t		*it_ent;
+	gitem_t		*it;
+	int random;
+
 	self->takedamage = DAMAGE_NO;
 	self->nextthink = level.time + 2 * FRAMETIME;
 	self->think = barrel_explode;
 	self->activator = attacker;
+
+	random = rand() % 6;
+
+	switch (random) {
+	case 0:
+		it = FindItem("rockets");
+		break;
+	case 1:
+		it = FindItem("grenades");
+		break;
+	case 2:
+		it = FindItem("upshroom");
+		break;
+	case 3:
+		it = FindItem("bullets");
+		break;
+	case 4:
+		it = FindItem("adrenaline");
+		break;
+	case 5:
+		it = FindItem("shells");
+		break;
+	case 6:
+		coins++;
+		return;
+	}
+
+	
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	Touch_Item(it_ent, attacker, NULL, NULL);
+	Touch_Item(it_ent, self, NULL, NULL);
+	
 }
 
 void SP_misc_explobox (edict_t *self)
@@ -989,6 +1030,7 @@ void SP_misc_explobox (edict_t *self)
 	self->nextthink = level.time + 2 * FRAMETIME;
 
 	gi.linkentity (self);
+
 }
 
 

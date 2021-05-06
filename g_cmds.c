@@ -879,7 +879,112 @@ void Cmd_PlayerList_f(edict_t *ent)
 	}
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
+/*
+==================
+Cmd_Buy_f
 
+Allow players to buy items
+==================
+*/
+void Cmd_Buy_f(edict_t *ent)
+{
+	char		*name;
+	gitem_t		*it;
+	int			index;
+	int			i;
+	edict_t		*it_ent;
+
+	name = gi.args();
+
+	it = FindItem(name);
+	if (!it)
+	{
+		name = gi.argv(1);
+		it = FindItem(name);
+		if (!it)
+		{
+			gi.cprintf(ent, PRINT_HIGH, "unknown item\n");
+			return;
+		}
+	}
+
+	if (!it->pickup)
+	{
+		gi.cprintf(ent, PRINT_HIGH, "non-pickup item\n");
+		return;
+	}
+
+	index = ITEM_INDEX(it);
+
+	if (it == FindItem("iceflower")) {
+		if (coins >= 3 ){
+			it_ent = G_Spawn();
+			it_ent->classname = it->classname;
+			SpawnItem(it_ent, it);
+			Touch_Item(it_ent, ent, NULL, NULL);
+			coins = coins - 3;
+			if (it_ent->inuse)
+				G_FreeEdict(it_ent);
+		}
+		else
+		{
+			gi.cprintf(ent, PRINT_HIGH, "insuficient funds. Need 3 coins for iceflower\n");
+		}
+	}
+	else if (it == FindItem("boomerang")) {
+		if (coins >= 3){
+			it_ent = G_Spawn();
+			it_ent->classname = it->classname;
+			SpawnItem(it_ent, it);
+			Touch_Item(it_ent, ent, NULL, NULL);
+			coins = coins - 3;
+			if (it_ent->inuse)
+				G_FreeEdict(it_ent);
+		}
+		else
+		{
+			gi.cprintf(ent, PRINT_HIGH, "insuficient funds. Need 3 coins for boomerang\n");
+		}
+	}
+	else if (it == FindItem("upshroom")) {
+		if (coins >= 5){
+			it_ent = G_Spawn();
+			it_ent->classname = it->classname;
+			SpawnItem(it_ent, it);
+			Touch_Item(it_ent, ent, NULL, NULL);
+			coins = coins - 5;
+			if (it_ent->inuse)
+				G_FreeEdict(it_ent);
+		}
+		else
+		{
+			gi.cprintf(ent, PRINT_HIGH, "insuficient funds. Need 5 coins for upshroom\n");
+		}
+	}
+	else if (it == FindItem("tanooki")) {
+		if (coins >= 3){
+			it_ent = G_Spawn();
+			it_ent->classname = it->classname;
+			SpawnItem(it_ent, it);
+			Touch_Item(it_ent, ent, NULL, NULL);
+			coins = coins - 3;
+			if (it_ent->inuse)
+				G_FreeEdict(it_ent);
+		}
+		else
+		{
+			gi.cprintf(ent, PRINT_HIGH, "insuficient funds. Need 3 coins for tanooki\n");
+		}
+	}
+	else
+	{
+		gi.cprintf(ent, PRINT_HIGH, "not a buyable item\n");
+		return;
+	}
+
+
+		
+}
 
 /*
 =================
@@ -968,6 +1073,11 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
+	else if (Q_stricmp(cmd, "buy") == 0) //adds buy command
+		Cmd_Buy_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
+
+
+
