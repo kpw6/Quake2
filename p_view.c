@@ -827,13 +827,27 @@ void G_SetClientSound (edict_t *ent)
 	else
 		ent->s.sound = 0;
 }
+void player_jump_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
+{
+			vec3_t	point;
+			vec3_t	normal;
+			int		damage;
+
+			VectorCopy(self->velocity, normal);
+			VectorNormalize(normal);
+			VectorMA(self->s.origin, self->maxs[0], normal, point);
+			damage = 40 + 10 * random();
+			T_Damage(other, self, self, self->velocity, point, normal, damage, damage, 0, MOD_BLASTER);
+}
+
+
 
 /*
 ===============
 G_SetClientFrame
 ===============
 */
-void G_SetClientFrame (edict_t *ent)
+void G_SetClientFrame(edict_t *ent)
 {
 	gclient_t	*client;
 	qboolean	duck, run;
@@ -860,9 +874,9 @@ void G_SetClientFrame (edict_t *ent)
 	if (!ent->groundentity && client->anim_priority <= ANIM_WAVE)
 		goto newanim;
 
-	if(client->anim_priority == ANIM_REVERSE)
+	if (client->anim_priority == ANIM_REVERSE)
 	{
-		if(ent->s.frame > client->anim_end)
+		if (ent->s.frame > client->anim_end)
 		{
 			ent->s.frame--;
 			return;
@@ -883,7 +897,13 @@ void G_SetClientFrame (edict_t *ent)
 		ent->client->anim_priority = ANIM_WAVE;
 		ent->s.frame = FRAME_jump3;
 		ent->client->anim_end = FRAME_jump6;
-		return;
+		vec3_t	point;
+		vec3_t	normal;
+		int		damage;
+
+		VectorCopy(ent->velocity, normal);
+		VectorNormalize(normal);
+		fire_blaster(ent, vec3_origin, forward, 1000, 10, EF_BLASTER, true);
 	}
 
 newanim:
