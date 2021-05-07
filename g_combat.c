@@ -556,3 +556,13 @@ void T_RadiusDamage (edict_t *inflictor, edict_t *attacker, float damage, edict_
 		}
 	}
 }
+/*
+============
+Freeze Target
+============
+*/
+void Freeze(edict_t *targ,edict_t *inflictor, edict_t *attacker)
+{
+	targ->movetype = MOVETYPE_STOP;
+	targ->nextthink = 0;
+}

@@ -170,7 +170,6 @@ MOVETYPE_NONE,			// never moves
 MOVETYPE_NOCLIP,		// origin and angles change with no interaction
 MOVETYPE_PUSH,			// no clip to world, push on box contact
 MOVETYPE_STOP,			// no clip to world, stops on box contact
-
 MOVETYPE_WALK,			// gravity
 MOVETYPE_STEP,			// gravity, special edge handling
 MOVETYPE_FLY,

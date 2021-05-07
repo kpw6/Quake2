@@ -919,8 +919,8 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 	if (deathmatch->value)
 		damage = 15;
 	else
-		damage = 0;
-	Blaster_Fire(ent, vec3_origin, damage, false, EF_HYPERBLASTER);
+		damage = 1000;
+	Blaster_Fire(ent, vec3_origin, damage, true, EF_HYPERBLASTER);
 	ent->client->ps.gunframe++;
 
 }
